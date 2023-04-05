@@ -8,8 +8,6 @@ pHtimer = Timer()
 #corrects to voltage on adc pin
 factorADC = 3.3 / (65535)
 
-#moistureRead = I2C()
-
 def read(pHtimer):
     print(phRead.read_u16() * factorADC)
 
