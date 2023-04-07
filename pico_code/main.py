@@ -3,13 +3,24 @@ from array import array
 import utime
 
 phRead = ADC(2)
-pHtimer = Timer()
+pHtime = Timer()
+
+moistRead = ADC(1)
+moistTime = Timer()
 
 #corrects to voltage on adc pin
 factorADC = 3.3 / (65535)
 
-def read(pHtimer):
-    print(phRead.read_u16() * factorADC)
+#corrects to numerical readings
+factorPH = 1.0
+factorMoist = 1.0
+
+def readPH(pHtimer):
+    print(phRead.read_u16() * factorADC * factorPH)
+
+def readMoist(moistTime):
+    print(moistRead.read_u16() * factorADC * factorMoist)
 
 
-pHtimer.init(freq= 20, mode=Timer.PERIODIC, callback=read)  
+pHtime.init(freq= 20, mode=Timer.PERIODIC, callback=readPH) 
+moistTime.init(freq= 20, mode=Timer.PERIODIC, callback=readMoist)
