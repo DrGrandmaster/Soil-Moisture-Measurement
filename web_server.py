@@ -4,9 +4,8 @@ from time import sleep
 from picozero import pico_temp_sensor, pico_led
 import machine
 
-ssid = 'Andres's iPhone'
-password = 'w62asrh7mdkck'
-# Connects the raspberry pi to the wifi
+ssid = 'Design_Wifi'
+password = 'Water123'
 def connect():
     #Connect to WLAN
     wlan = network.WLAN(network.STA_IF)
@@ -20,12 +19,8 @@ def connect():
     print(f'Connected on {ip}')
     return ip
 
-try:
-    ip = connect()
-except KeyboardInterrupt:
-    machine.reset()
 ###
-sins#opens a socket   
+    
 def open_socket(ip):
     # Open a socket
     address = (ip, 80)
@@ -34,27 +29,12 @@ def open_socket(ip):
     connection.listen(1)
     return connection
 
-
-try:
-    ip = connect()
-    connection = open_socket(ip)
-except KeyboardInterrupt:
-    machine.reset()
 ###
-    
-# creation of a webpage with the data
-def webpage(temperature, state):
+def webpage(temperature):
     #Template HTML
     html = f"""
             <!DOCTYPE html>
             <html>
-            <form action="./lighton">
-            <input type="submit" value="Light on" />
-            </form>
-            <form action="./lightoff">
-            <input type="submit" value="Light off" />
-            </form>
-            <p>LED is {state}</p>
             <p>Temperature is {temperature}</p>
             </body>
             </html>
@@ -77,3 +57,10 @@ def serve(connection):
         html = webpage(temperature)
         client.send(html)
         client.close()
+
+try:
+    ip = connect()
+    connection = open_socket(ip)
+    serve(connection)
+except KeyboardInterrupt:
+    machine.reset()
